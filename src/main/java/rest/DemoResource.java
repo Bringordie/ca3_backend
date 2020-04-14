@@ -3,6 +3,8 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.ChuckDTO;
+import dtos.CombinedDTO;
+import dtos.DTOInterface;
 import dtos.DadDTO;
 import dtos.JSONPlaceholderDTO;
 import dtos.SkyscannerDTO;
@@ -36,7 +38,7 @@ import utils.HttpUtils;
 @Path("info")
 public class DemoResource {
 
-    private static EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
+    private static EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.TEST, EMF_Creator.Strategy.CREATE);
 
     @Context
     private UriInfo context;
@@ -85,7 +87,8 @@ public class DemoResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin", "user"})
+    @Path("test")
+    //@RolesAllowed({"admin", "user"})
     public String getJokes() throws IOException, InterruptedException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 //        List<String> urls = new ArrayList<>();
@@ -95,49 +98,35 @@ public class DemoResource {
 //        urls.add("https://api.chucknorris.io/jokes/random");
 //        urls.add("https://api.chucknorris.io/jokes/random");
 
-        ChuckDTO chuckDTO;
-        DadDTO dadDTO = null;
-        JSONPlaceholderDTO jpDTO = null;
-        SkyscannerDTO skyscannerDTO = null;
+        ChuckDTO chuckDTO = new ChuckDTO("https://api.chucknorris.io/jokes/random");
+        DadDTO dadDTO = new DadDTO("https://icanhazdadjoke.com");
+//        JSONPlaceholderDTO jpDTO = null;
+//        SkyscannerDTO skyscannerDTO = null;
 
+        List<DTOInterface> dtos = new ArrayList<>();
+        dtos.add(chuckDTO);
+        dtos.add(dadDTO);
+        
         ExecutorService workingJack = Executors.newFixedThreadPool(5);
-
-         Runnable task  = new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                    String chuck = HttpUtils.fetchData("https://api.chucknorris.io/jokes/random");
-                    chuckDTO = gson.fromJson(chuck, ChuckDTO.class);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                }
-            };
-            workingJack.submit(task);   
-
-//        Runnable task2 = () -> {
-//            String dad = HttpUtils.fetchData("https://icanhazdadjoke.com");
-//            dadDTO = gson.fromJson(dad, DadDTO.class);
-//        };
-//        workingJack.submit(task2);
-//
-//        Runnable task3 = () -> {
-//            String ph = HttpUtils.fetchData("https://jsonplaceholder.typicode.com/todos/1");
-//            jpDTO = gson.fromJson(ph, JSONPlaceholderDTO.class);
-//        };
-//        workingJack.submit(task3);
-
+        for (DTOInterface dto : dtos) {
+            Runnable task = () -> {
+            try {
+                dto.fetch();
+            } catch (IOException ex) {
+                Logger.getLogger(DemoResource.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        };
+        
+        workingJack.submit(task);
+        }
+        
         workingJack.shutdown();
         workingJack.awaitTermination(15, TimeUnit.SECONDS);
 
-//        String chuck = HttpUtils.fetchData("https://api.chucknorris.io/jokes/random");
-//        ChuckDTO chuckDTO = gson.fromJson(chuck, ChuckDTO.class);
-//        String dad = HttpUtils.fetchData("https://icanhazdadjoke.com");
-//        DadDTO dadDTO = gson.fromJson(dad, DadDTO.class);
-        //CombinedDTO combinedDTO = new CombinedDTO(dadDTO, chuckDTO);
+        CombinedDTO combinedDTO = new CombinedDTO(dadDTO, chuckDTO);
         //This is what your endpoint should return       
-        //String combinedJSON = gson.toJson(combinedDTO);
-        //return combinedJSON;
+        String combinedJSON = gson.toJson(combinedDTO);
+        return combinedJSON;
     }
 
 }
