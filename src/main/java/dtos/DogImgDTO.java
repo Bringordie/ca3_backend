@@ -26,7 +26,7 @@ public class DogImgDTO implements DTOInterface{
     @Override
     public void fetch() throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String str = HttpUtils.fetchData(this.url);
+        String str = HttpUtils.fetchData(this.url, "", "");
         DogImgDTO diDTO = gson.fromJson(str, DogImgDTO.class);
         this.message = diDTO.getMessage();
     }

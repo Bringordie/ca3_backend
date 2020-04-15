@@ -8,13 +8,17 @@ import java.util.Scanner;
 
 public class HttpUtils {
 
-    public static String fetchData(String _url) throws MalformedURLException, IOException {
+    public static String fetchData(String _url, String host, String key) throws MalformedURLException, IOException {
         URL url = new URL(_url);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         //con.setRequestProperty("Accept", "application/json;charset=UTF-8");
         con.setRequestProperty("Accept", "application/json");
         con.setRequestProperty("User-Agent", "server");
+        if (!host.isEmpty() && !key.isEmpty()) {
+            con.setRequestProperty("x-rapidapi-host", host);
+            con.setRequestProperty("x-rapidapi-key", key);
+        }
 
         Scanner scan = new Scanner(con.getInputStream());
         String jsonStr = null;

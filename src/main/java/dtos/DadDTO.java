@@ -30,11 +30,17 @@ public class DadDTO implements DTOInterface{
     @Override
     public void fetch() throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String dad = HttpUtils.fetchData("https://icanhazdadjoke.com");
+        String dad = HttpUtils.fetchData(this.url, "", "");
         DadDTO dadDTO = gson.fromJson(dad, DadDTO.class);
         this.id = dadDTO.getId();
         this.joke = dadDTO.getJoke();
     }
+
+    @Override
+    public String toString() {
+        return "DadDTO{" + "id=" + id + ", joke=" + joke + ", url=" + url + '}';
+    }
+    
     
     
 }

@@ -20,6 +20,10 @@ public class WeatherDTO implements DTOInterface {
         this.temp = temp;
     }
 
+    public WeatherDTO() {
+    }
+    
+
     public void setCountryCode(String countryCode) {
         this.country_code = countryCode;
     }
@@ -48,7 +52,7 @@ public class WeatherDTO implements DTOInterface {
     @Override
     public void fetch() throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String weather = HttpUtils.fetchData("https://api.weatherbit.io/v2.0/current?city=Copenhagen,DK&key=de4ff00ad5a24948967c5a21d3892aea");
+        String weather = HttpUtils.fetchData("https://api.weatherbit.io/v2.0/current?city=Copenhagen,DK&key=de4ff00ad5a24948967c5a21d3892aea", "", "");
         WeatherDTO weatherDTO = gson.fromJson(weather, WeatherDTO.class);
         this.country_code = weatherDTO.country_code;
         this.city_name = weatherDTO.city_name;

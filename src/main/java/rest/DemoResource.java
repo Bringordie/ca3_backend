@@ -8,6 +8,7 @@ import dtos.DTOInterface;
 import dtos.DadDTO;
 import dtos.DogImgDTO;
 import dtos.SkyscannerDTO;
+import dtos.WeatherDTO;
 import entities.User;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -95,11 +96,14 @@ public class DemoResource {
         ChuckDTO chuckDTO = new ChuckDTO("https://api.chucknorris.io/jokes/random");
         DadDTO dadDTO = new DadDTO("https://icanhazdadjoke.com");
         DogImgDTO diDTO = new DogImgDTO("https://dog.ceo/api/breeds/image/random");
+        SkyscannerDTO scannerDTO = new SkyscannerDTO();
+        WeatherDTO weatherDTO = new WeatherDTO();
 
         List<DTOInterface> dtos = new ArrayList<>();
         dtos.add(chuckDTO);
         dtos.add(dadDTO);
         dtos.add(diDTO);
+        dtos.add(scannerDTO);
         
         ExecutorService workingJack = Executors.newFixedThreadPool(5);
         for (DTOInterface dto : dtos) {
@@ -117,7 +121,7 @@ public class DemoResource {
         workingJack.shutdown();
         workingJack.awaitTermination(15, TimeUnit.SECONDS);
         
-        CombinedDTO combinedDTO = new CombinedDTO(dadDTO, chuckDTO, diDTO);
+        CombinedDTO combinedDTO = new CombinedDTO(dadDTO, chuckDTO, diDTO, weatherDTO, scannerDTO);
         //This is what your endpoint should return       
         String combinedJSON = gson.toJson(combinedDTO);
         return combinedJSON;

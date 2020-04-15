@@ -11,8 +11,9 @@ public class CombinedDTO {
     private String weatherCity;
     private String weatherTemp;
     private String weatherURL;
+    private SkyscannerDTO scanner;
     
-    public CombinedDTO(DadDTO dadDTO, ChuckDTO chuckDTO, DogImgDTO diDTO, WeatherDTO weatherDTO){
+    public CombinedDTO(DadDTO dadDTO, ChuckDTO chuckDTO, DogImgDTO diDTO, WeatherDTO weatherDTO, SkyscannerDTO scannerDTO){
         this.dadJoke = dadDTO.getJoke();
         this.dadJokeURL = "https://icanhazdadjoke.com";
         this.chuckJoke = chuckDTO.getValue();
@@ -22,5 +23,6 @@ public class CombinedDTO {
         this.weatherCity = weatherDTO.getCityName();
         this.weatherTemp = weatherDTO.getTemp();
         this.weatherURL = "https://api.weatherbit.io/v2.0/current?city=Copenhagen,DK&key=de4ff00ad5a24948967c5a21d3892aea";
+        this.scanner = scannerDTO;
     }
 }
