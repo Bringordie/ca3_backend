@@ -6,7 +6,7 @@ import dtos.ChuckDTO;
 import dtos.CombinedDTO;
 import dtos.DTOInterface;
 import dtos.DadDTO;
-import dtos.JSONPlaceholderDTO;
+import dtos.DogImgDTO;
 import dtos.SkyscannerDTO;
 import entities.User;
 import java.io.IOException;
@@ -38,7 +38,7 @@ import utils.HttpUtils;
 @Path("info")
 public class DemoResource {
 
-    private static EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.TEST, EMF_Creator.Strategy.CREATE);
+    private static EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
 
     @Context
     private UriInfo context;
@@ -89,23 +89,17 @@ public class DemoResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("test")
     //@RolesAllowed({"admin", "user"})
-    public String getJokes() throws IOException, InterruptedException {
+    public String getThingsFromMultipleAPIs() throws InterruptedException, IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//        List<String> urls = new ArrayList<>();
-//        urls.add("https://api.chucknorris.io/jokes/random");
-//        urls.add("https://icanhazdadjoke.com");
-//        urls.add("https://jsonplaceholder.typicode.com/todos/1");
-//        urls.add("https://api.chucknorris.io/jokes/random");
-//        urls.add("https://api.chucknorris.io/jokes/random");
 
         ChuckDTO chuckDTO = new ChuckDTO("https://api.chucknorris.io/jokes/random");
         DadDTO dadDTO = new DadDTO("https://icanhazdadjoke.com");
-//        JSONPlaceholderDTO jpDTO = null;
-//        SkyscannerDTO skyscannerDTO = null;
+        DogImgDTO diDTO = new DogImgDTO("https://dog.ceo/api/breeds/image/random");
 
         List<DTOInterface> dtos = new ArrayList<>();
         dtos.add(chuckDTO);
         dtos.add(dadDTO);
+        dtos.add(diDTO);
         
         ExecutorService workingJack = Executors.newFixedThreadPool(5);
         for (DTOInterface dto : dtos) {
@@ -116,17 +110,19 @@ public class DemoResource {
                 Logger.getLogger(DemoResource.class.getName()).log(Level.SEVERE, null, ex);
             }
         };
-        
+
         workingJack.submit(task);
         }
         
         workingJack.shutdown();
         workingJack.awaitTermination(15, TimeUnit.SECONDS);
-
-        CombinedDTO combinedDTO = new CombinedDTO(dadDTO, chuckDTO);
+        
+        CombinedDTO combinedDTO = new CombinedDTO(dadDTO, chuckDTO, diDTO);
         //This is what your endpoint should return       
         String combinedJSON = gson.toJson(combinedDTO);
         return combinedJSON;
+
+//        return gson.toJson(diDTO);
     }
 
 }
