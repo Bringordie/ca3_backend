@@ -10,6 +10,11 @@ import utils.HttpUtils;
 public class WeatherDTO implements DTOInterface{
     private List<WeatherDataObjectDTO> data;
     private int count;
+    private boolean failed = false;
+
+    public boolean isFailed() {
+        return failed;
+    }
 
     public WeatherDTO(List<WeatherDataObjectDTO> data, int count) {
         this.data = data;
@@ -36,12 +41,16 @@ public class WeatherDTO implements DTOInterface{
     }
 
     @Override
-    public void fetch() throws IOException {
+    public void fetch(){
+        try{
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String weather = HttpUtils.fetchData("https://api.weatherbit.io/v2.0/current?city=Copenhagen,DK&key=de4ff00ad5a24948967c5a21d3892aea", "", "");
         WeatherDTO wtDTO = gson.fromJson(weather, WeatherDTO.class);
         this.data = wtDTO.getData();
         this.count = wtDTO.getCount();
+        }catch(IOException ex){
+            this.failed = true;
+        }
     }
 
     

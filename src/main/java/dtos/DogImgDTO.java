@@ -8,6 +8,11 @@ import utils.HttpUtils;
 public class DogImgDTO implements DTOInterface{
     private String url;
     private String message;
+    private boolean failed = false;
+
+    public boolean isFailed() {
+        return failed;
+    }
 
     public String getUrl() {
         return url;
@@ -24,11 +29,15 @@ public class DogImgDTO implements DTOInterface{
     }
 
     @Override
-    public void fetch() throws IOException {
+    public void fetch(){
+        try{
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String str = HttpUtils.fetchData(this.url, "", "");
         DogImgDTO diDTO = gson.fromJson(str, DogImgDTO.class);
         this.message = diDTO.getMessage();
+        }catch(IOException ex){
+            this.failed = true;
+        }
     }
     
     

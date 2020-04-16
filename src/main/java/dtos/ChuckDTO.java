@@ -10,6 +10,7 @@ public class ChuckDTO implements DTOInterface {
     private String id;
     private String value;
     private String url;
+    private boolean failed = false;
 
     public ChuckDTO(String id, String value) {
         this.id = id;
@@ -18,6 +19,10 @@ public class ChuckDTO implements DTOInterface {
 
     public ChuckDTO(String url) {
         this.url = url;
+    }
+
+    public boolean isFailed() {
+        return failed;
     }
 
     public void setChuck(ChuckDTO chuck) {
@@ -33,12 +38,16 @@ public class ChuckDTO implements DTOInterface {
     }
 
     @Override
-    public void fetch() throws IOException  {
+    public void fetch() {
+        try {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String chuck = HttpUtils.fetchData(this.url, "", "");
         ChuckDTO chuckDTO = gson.fromJson(chuck, ChuckDTO.class);
         this.id = chuckDTO.getId();
         this.value = chuckDTO.getValue();
+        }catch(IOException ex){
+            this.failed = true;
+        }
     }
 
     @Override

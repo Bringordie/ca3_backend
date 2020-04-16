@@ -112,11 +112,7 @@ public class DemoResource {
         Runnable task  = new Runnable() {
                 @Override
                 public void run() {
-                    try {
                     dto.fetch();
-                } catch (IOException ex) {
-                   Logger.getLogger(DemoResource.class.getName()).log(Level.SEVERE, null, ex);
-                }
                 }
             };
         workingJack.submit(task);

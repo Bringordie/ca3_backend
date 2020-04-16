@@ -9,6 +9,11 @@ public class DadDTO implements DTOInterface{
     private String id;
     private String joke;
     private String url;
+    private boolean failed = false;
+
+    public boolean isFailed() {
+        return failed;
+    }
 
     public DadDTO(String id, String joke) {
         this.id = id;
@@ -28,12 +33,16 @@ public class DadDTO implements DTOInterface{
     }
 
     @Override
-    public void fetch() throws IOException {
+    public void fetch(){
+        try {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String dad = HttpUtils.fetchData(this.url, "", "");
         DadDTO dadDTO = gson.fromJson(dad, DadDTO.class);
         this.id = dadDTO.getId();
         this.joke = dadDTO.getJoke();
+        }catch(IOException ex) {
+            this.failed=true;
+        }
     }
 
     @Override

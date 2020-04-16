@@ -12,12 +12,13 @@ public class CombinedDTO {
     private SkyscannerDTO scanner;
     
     public CombinedDTO(DadDTO dadDTO, ChuckDTO chuckDTO, DogImgDTO diDTO, WeatherDTO weatherDTO, SkyscannerDTO scannerDTO){
-        this.dadJoke = dadDTO.getJoke();
+        //hvis failed er true skriver vi "fetch failed" i stedet for joken som ville være null
+        this.dadJoke = dadDTO.isFailed() ? "fetch failed" : dadDTO.getJoke();    
         this.dadJokeURL = "https://icanhazdadjoke.com";
-        this.chuckJoke = chuckDTO.getValue();
+        this.chuckJoke = chuckDTO.isFailed() ? "fetch failed" : chuckDTO.getValue();
         this.chuckJokeURL = "https://api.chucknorris.io/jokes/random";
-        this.dogDTOMessage = diDTO.getMessage();
-        this.weatherTimezone = weatherDTO.getData().get(0).getTimezone();
+        this.dogDTOMessage = diDTO.isFailed() ? "fetch failed" : diDTO.getMessage();
+        this.weatherTimezone = weatherDTO.isFailed() ? "fetch failed" : weatherDTO.getData().get(0).getTimezone();
         this.weatherURL = "https://api.weatherbit.io/v2.0/current?city=Copenhagen,DK&key=de4ff00ad5a24948967c5a21d3892aea";
         this.scanner = scannerDTO;
     }
