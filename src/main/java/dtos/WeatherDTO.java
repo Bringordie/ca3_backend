@@ -3,61 +3,47 @@ package dtos;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import utils.HttpUtils;
 
-public class WeatherDTO implements DTOInterface {
-    
-    private String country_code;
-    private String city_name;
-    private String temp;
-//    private int lon;
-//    private int lat;
-//    private String coord = Integer.toString(lon) + " " + Integer.toString(lat);
-    
-    public WeatherDTO(String countryCode, String cityName, String temp) {
-        this.country_code = countryCode;
-        this.city_name = cityName;
-        this.temp = temp;
+public class WeatherDTO implements DTOInterface{
+    private List<WeatherDataObjectDTO> data;
+    private int count;
+
+    public WeatherDTO(List<WeatherDataObjectDTO> data, int count) {
+        this.data = data;
+        this.count = count;
     }
 
     public WeatherDTO() {
     }
-    
 
-    public void setCountryCode(String countryCode) {
-        this.country_code = countryCode;
+    public List<WeatherDataObjectDTO> getData() {
+        return data;
     }
 
-    public void setCityName(String cityName) {
-        this.city_name = cityName;
+    public void setData(List<WeatherDataObjectDTO> data) {
+        this.data = data;
     }
 
-    public void setTemp(String temp) {
-        this.temp = temp;
+    public int getCount() {
+        return count;
     }
 
-    public String getCountryCode() {
-        return country_code;
+    public void setCount(int count) {
+        this.count = count;
     }
 
-    public String getCityName() {
-        return city_name;
-    }
-
-    public String getTemp() {
-        return temp;
-    }
-   
-    
     @Override
     public void fetch() throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String weather = HttpUtils.fetchData("https://api.weatherbit.io/v2.0/current?city=Copenhagen,DK&key=de4ff00ad5a24948967c5a21d3892aea", "", "");
-        WeatherDTO weatherDTO = gson.fromJson(weather, WeatherDTO.class);
-        this.country_code = weatherDTO.country_code;
-        this.city_name = weatherDTO.city_name;
-        this.temp = weatherDTO.temp;
-        
+        WeatherDTO wtDTO = gson.fromJson(weather, WeatherDTO.class);
+        this.data = wtDTO.getData();
+        this.count = wtDTO.getCount();
     }
+
+    
     
 }

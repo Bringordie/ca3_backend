@@ -7,9 +7,7 @@ public class CombinedDTO {
     private String chuckJoke;
     private String chuckJokeURL;
     private String dogDTOMessage;
-    private String weatherCountry;
-    private String weatherCity;
-    private String weatherTemp;
+    private String weatherTimezone;
     private String weatherURL;
     private SkyscannerDTO scanner;
     
@@ -19,10 +17,47 @@ public class CombinedDTO {
         this.chuckJoke = chuckDTO.getValue();
         this.chuckJokeURL = "https://api.chucknorris.io/jokes/random";
         this.dogDTOMessage = diDTO.getMessage();
-        this.weatherCountry = weatherDTO.getCountryCode();
-        this.weatherCity = weatherDTO.getCityName();
-        this.weatherTemp = weatherDTO.getTemp();
+        this.weatherTimezone = weatherDTO.getData().get(0).getTimezone();
         this.weatherURL = "https://api.weatherbit.io/v2.0/current?city=Copenhagen,DK&key=de4ff00ad5a24948967c5a21d3892aea";
         this.scanner = scannerDTO;
     }
+
+    @Override
+    public String toString() {
+        return "CombinedDTO{" + "dadJoke=" + dadJoke + ", dadJokeURL=" + dadJokeURL + ", chuckJoke=" + chuckJoke + ", chuckJokeURL=" + chuckJokeURL + ", dogDTOMessage=" + dogDTOMessage + ", weatherTimezone=" + weatherTimezone + ", weatherURL=" + weatherURL + ", scanner=" + scanner + '}';
+    }
+
+    public String getDadJoke() {
+        return dadJoke;
+    }
+
+    public String getDadJokeURL() {
+        return dadJokeURL;
+    }
+
+    public String getChuckJoke() {
+        return chuckJoke;
+    }
+
+    public String getChuckJokeURL() {
+        return chuckJokeURL;
+    }
+
+    public String getDogDTOMessage() {
+        return dogDTOMessage;
+    }
+
+    public String getWeatherTimezone() {
+        return weatherTimezone;
+    }
+
+    public String getWeatherURL() {
+        return weatherURL;
+    }
+
+    public SkyscannerDTO getScanner() {
+        return scanner;
+    }
+    
+    
 }

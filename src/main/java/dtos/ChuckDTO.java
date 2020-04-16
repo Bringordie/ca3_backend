@@ -33,7 +33,7 @@ public class ChuckDTO implements DTOInterface {
     }
 
     @Override
-    public void fetch() throws IOException {
+    public void fetch() throws IOException  {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String chuck = HttpUtils.fetchData(this.url, "", "");
         ChuckDTO chuckDTO = gson.fromJson(chuck, ChuckDTO.class);

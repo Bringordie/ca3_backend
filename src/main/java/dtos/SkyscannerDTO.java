@@ -8,8 +8,11 @@ import utils.HttpUtils;
 
 public class SkyscannerDTO implements DTOInterface{
     private List<items> Places;
-    
 
+    public List<items> getPlaces() {
+        return Places;
+    }
+    
     public SkyscannerDTO() {
     }
 

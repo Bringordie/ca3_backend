@@ -9,7 +9,7 @@ import dtos.DadDTO;
 import dtos.DogImgDTO;
 import dtos.SkyscannerDTO;
 import dtos.WeatherDTO;
-import dtos.WeatherTestDTO;
+import dtos.WeatherDTO;
 import entities.User;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -90,7 +90,7 @@ public class DemoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("test")
-    //@RolesAllowed({"admin", "user"})
+    @RolesAllowed({"admin", "user"})
     public String getThingsFromMultipleAPIs() throws InterruptedException, IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -105,40 +105,30 @@ public class DemoResource {
         dtos.add(dadDTO);
         dtos.add(diDTO);
         dtos.add(scannerDTO);
+        dtos.add(weatherDTO);
         
         ExecutorService workingJack = Executors.newFixedThreadPool(5);
         for (DTOInterface dto : dtos) {
-            Runnable task = () -> {
-            try {
-                dto.fetch();
-            } catch (IOException ex) {
-                Logger.getLogger(DemoResource.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        };
-
+        Runnable task  = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                    dto.fetch();
+                } catch (IOException ex) {
+                   Logger.getLogger(DemoResource.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                }
+            };
         workingJack.submit(task);
         }
         
         workingJack.shutdown();
         workingJack.awaitTermination(15, TimeUnit.SECONDS);
-        
         CombinedDTO combinedDTO = new CombinedDTO(dadDTO, chuckDTO, diDTO, weatherDTO, scannerDTO);
         //This is what your endpoint should return       
         String combinedJSON = gson.toJson(combinedDTO);
         return combinedJSON;
 
-//        return gson.toJson(diDTO);
-    }
-    
-    public static void main(String[] args) throws IOException {
-        
-//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//        String weather = HttpUtils.fetchData("https://api.weatherbit.io/v2.0/current?city=Copenhagen,DK&key=de4ff00ad5a24948967c5a21d3892aea", "", "");
-//        WeatherTestDTO wtDTO = gson.fromJson(weather, WeatherTestDTO.class);
-//        System.out.println(wtDTO.getData().get(0).getTimezone());
-        WeatherTestDTO wtDTO = new WeatherTestDTO();
-        wtDTO.fetch();
-        System.out.println(wtDTO.getData().get(0).getTimezone());
     }
 
 }
