@@ -9,6 +9,7 @@ import dtos.DadDTO;
 import dtos.DogImgDTO;
 import dtos.SkyscannerDTO;
 import dtos.WeatherDTO;
+import dtos.WeatherTestDTO;
 import entities.User;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -127,6 +128,17 @@ public class DemoResource {
         return combinedJSON;
 
 //        return gson.toJson(diDTO);
+    }
+    
+    public static void main(String[] args) throws IOException {
+        
+//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//        String weather = HttpUtils.fetchData("https://api.weatherbit.io/v2.0/current?city=Copenhagen,DK&key=de4ff00ad5a24948967c5a21d3892aea", "", "");
+//        WeatherTestDTO wtDTO = gson.fromJson(weather, WeatherTestDTO.class);
+//        System.out.println(wtDTO.getData().get(0).getTimezone());
+        WeatherTestDTO wtDTO = new WeatherTestDTO();
+        wtDTO.fetch();
+        System.out.println(wtDTO.getData().get(0).getTimezone());
     }
 
 }
