@@ -20,7 +20,7 @@ public class CombinedDTO {
         this.dogDTOMessage = diDTO.isFailed() ? "fetch failed" : diDTO.getMessage();
         this.weatherTimezone = weatherDTO.isFailed() ? "fetch failed" : weatherDTO.getData().get(0).getTimezone();
         this.weatherURL = "https://api.weatherbit.io/v2.0/current?city=Copenhagen,DK&key=de4ff00ad5a24948967c5a21d3892aea";
-        this.scanner = scannerDTO;
+        this.scanner = diDTO.isFailed() ? new SkyscannerDTO("fetch failed"): scannerDTO;
     }
 
     @Override

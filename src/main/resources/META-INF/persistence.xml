@@ -9,6 +9,9 @@
       <!-- DO NOT remove the line below. It's not set by the  entityUtils.EMF_Creator -->
       <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
       <!-- The missing values are added by entityUtils.EMF_Creator -->
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://157.230.104.234:3306/ca3?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      <property name="javax.persistence.jdbc.user" value="group"/>
+      <property name="javax.persistence.jdbc.password" value="group1234"/>
     </properties>
   </persistence-unit>
 </persistence>

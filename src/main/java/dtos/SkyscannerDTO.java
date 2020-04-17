@@ -9,6 +9,7 @@ import utils.HttpUtils;
 public class SkyscannerDTO implements DTOInterface{
     private List<items> Places;
     private boolean failed;
+    private String response;
 
     public boolean isFailed() {
         return failed;
@@ -19,6 +20,10 @@ public class SkyscannerDTO implements DTOInterface{
     }
     
     public SkyscannerDTO() {
+    }
+    
+    public SkyscannerDTO(String response) {
+        this.response = response;
     }
 
     public SkyscannerDTO(List<items> Places) {

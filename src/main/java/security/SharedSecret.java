@@ -17,11 +17,11 @@ public class SharedSecret {
         System.out.println("****      See security.SharedSecret        *******");
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        */
+        
         //REMOVE BEFORE PRODUCTION
         if(true){
             return "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA".getBytes();
-        }
+        }*/
         if (secret == null) {  //Or better read as an environment variable set on production server
             secret = new byte[32];
             new SecureRandom().nextBytes(secret);

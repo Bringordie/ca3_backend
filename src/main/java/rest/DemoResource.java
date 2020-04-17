@@ -33,6 +33,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import utils.EMF_Creator;
 import utils.HttpUtils;
+import utils.SetupTestUsers;
 
 /**
  * @author lam@cphbusiness.dk
@@ -91,7 +92,7 @@ public class DemoResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("test")
     @RolesAllowed({"admin", "user"})
-    public String getThingsFromMultipleAPIs() throws InterruptedException, IOException {
+    public String getThingsFromMultipleAPIs() throws InterruptedException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         ChuckDTO chuckDTO = new ChuckDTO("https://api.chucknorris.io/jokes/random");
@@ -126,5 +127,5 @@ public class DemoResource {
         return combinedJSON;
 
     }
-
+    
 }
