@@ -12,3 +12,5 @@
 
 4) På Travis find dit repository, gå ind i settings og lav to environment variables REMOTE_USER og REMOTE_PW (du kan se hvilke værdier de skal have på din droplet i filen /opt/tomcat/conf/tomcat-users.xml).
 
+5) På travis tryk på knappen der viser status på dit build, vælg formatet markdown, kopier det der står i result og paste det ind øverst i din readme fil på github.
+
