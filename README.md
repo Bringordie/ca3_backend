@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.com/Bringordie/ca3_backend.svg?branch=master)](https://travis-ci.com/Bringordie/ca3_backend)
 
+[Link to frontend](https://github.com/Bringordie/ca3_frontend)
+
 **Login credentials til frontend:**
 
 user = 
